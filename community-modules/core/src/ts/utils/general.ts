@@ -560,10 +560,40 @@ export class Utils {
     }
 
     static serializeDateToYyyyMmDd(date: Date, separator: string): string | null {
-        if (!date) {
-            return null;
-        }
+        if (!date) { return null; }
+
         return date.getFullYear() + separator + this.padStart(date.getMonth() + 1, 2) + separator + this.padStart(date.getDate(), 2);
+    }
+
+    static getTimeFromDate(date: Date): string | null {
+        if (!date) { return null; }
+
+        return `${this.padStart(date.getHours(), 2)}:${this.padStart(date.getMinutes(), 2)}:${this.padStart(date.getSeconds(), 2)}`;
+    }
+
+    static normalizeTime(time: string): string {
+        if (!time) {
+            return '00:00:00';
+        }
+        let hoursStr = '00';
+        let minutesStr = '00';
+        let secondsStr = '00';
+
+        const [ hours, minutes, seconds ] = time.split(':').map(Number);
+
+        if (hours >= 0 && hours <= 24) {
+            hoursStr = _.padStart(hours, 2);
+        }
+
+        if (minutes >= 0 && minutes <= 59) {
+            minutesStr = _.padStart(minutes, 2);
+        }
+
+        if (seconds >= 0 && seconds <= 59) {
+            secondsStr = _.padStart(seconds, 2);
+        }
+
+        return `${hoursStr}:${minutesStr}:${secondsStr}`;
     }
 
     static padStart(num: number, totalStringSize: number): string {
